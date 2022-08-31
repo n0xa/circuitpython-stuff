@@ -1,0 +1,11 @@
+/LIB/
+/LIB/adafruit_pixelbuf.mpy
+/LIB/NEOPIXEL.MPY
+/LIB/adafruit_hid
+/LIB/adafruit_hid/keyboard_layout_us.mpy
+/LIB/adafruit_hid/keycode.mpy
+/LIB/adafruit_hid/mouse.mpy
+/LIB/adafruit_hid/consumer_control.mpy
+/LIB/adafruit_hid/__init__.mpy
+/LIB/adafruit_hid/consumer_control_code.mpy
+/LIB/adafruit_hid/keyboard.mpy

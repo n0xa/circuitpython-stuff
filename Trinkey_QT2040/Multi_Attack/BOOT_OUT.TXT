@@ -1,0 +1,2 @@
+Adafruit CircuitPython 7.0.0 on 2021-09-20; Adafruit QT2040 Trinkey with rp2040
+Board ID:adafruit_qt2040_trinkey
