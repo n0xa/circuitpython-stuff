@@ -1,8 +1,9 @@
-############## Press either button to step through 
-############## TV power codes. Comment out L43-44
-############## If you just want it to rip through
-############## all the codes over and over without
-############## stopping.
+############## flip the slide switch on to start 
+############## ripping through all the codes.
+############## slide it to off to pause the TV-B-Gone.
+
+############## The magic sequences are in CODES.JSON.
+
 import board
 import array
 import time
@@ -10,10 +11,11 @@ from digitalio import DigitalInOut, Direction, Pull
 import pwmio
 import pulseio
 
-############## Switch to select 'stealth-mode'
+############## Switch to enable TV-B-Gone
 switch = DigitalInOut(board.SLIDE_SWITCH)
 switch.direction = Direction.INPUT
 switch.pull = Pull.UP
+
 # Button to see output debug
 led = DigitalInOut(board.D13)
 led.direction = Direction.OUTPUT
@@ -33,25 +35,19 @@ button_b = DigitalInOut(board.BUTTON_B)
 button_b.direction = Direction.INPUT
 button_b.pull = Pull.DOWN
 
-
 pwm = pwmio.PWMOut(board.REMOTEOUT, frequency=38000, duty_cycle=2 ** 15, variable_frequency=True)
 pulse = pulseio.PulseOut(pwm)
 
 while True:
     f = open("/codes.json", "r")
     for line in f:
-        while not (button_a.value or button_b.value):
+        while switch.value:
             pass
-        time.sleep(0.5)  # Give a half second before starting    
         print("ping")
         code = eval(line)
         print(code)
         print(code['freq'])
-        #pwm.frequency = code['freq']
-        if switch.value:
-            led.value = True
-        else:
-            spkr.value = True
+        led.value = True
         # If this is a repeating code, extract details
         try:
             repeat = code['repeat']
@@ -66,6 +62,7 @@ while True:
         for i in code['index']:
             pulses += table[i]  # and add to the list of pulses
         pulses.pop()  # remove one final 'low' pulse
+        # Firin mah lazor
         for i in range(repeat):
             pulse.send(array.array('H', pulses))
             time.sleep(delay)
