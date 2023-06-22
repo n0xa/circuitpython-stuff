@@ -1,8 +1,14 @@
-############## flip the slide switch on to start 
-############## ripping through all the codes.
-############## slide it to off to pause the TV-B-Gone.
+############## Flip the slide switch on (to the right 
+############## if the USB port is pointing away from you)
+############## to start ripping through all the codes.
+############## Slide it to off to pause the TV-B-Gone.
 
 ############## The magic sequences are in CODES.JSON.
+
+############## Lots of this was borrowed from, with heavy
+############## modifications, this blog post on digi-key
+# https://www.digikey.com/en/maker/projects/circuit-python-tv-zapper-with-circuit-playground-express/643fe3dad81e43518e99ecaede92a856
+
 
 import board
 import array
