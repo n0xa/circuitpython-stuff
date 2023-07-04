@@ -44,11 +44,32 @@ button_b.pull = Pull.DOWN
 pwm = pwmio.PWMOut(board.REMOTEOUT, frequency=38000, duty_cycle=2 ** 15, variable_frequency=True)
 pulse = pulseio.PulseOut(pwm)
 
+def blink(num):
+    digits=[int(i) for i in str(num)]
+    print(digits)
+    for numeral in digits:
+        if(numeral==0):
+            numeral = 10
+            print('0 -> 10')
+        print(numeral,' blinks')
+        count = range (1, int(numeral))
+        for blinks in count:
+            led.value = True
+            time.sleep(0.25)
+            led.value = False
+            time.sleep(0.25)
+        time.sleep(0.75)
+
+
 while True:
+    counter = 0
     f = open("/codes.json", "r")
     for line in f:
-        while switch.value:
+        counter += 1
+        while (switch.value and (not button_b.value)):
             pass
+        if button_b.value:
+            blink(counter)
         print("ping")
         code = eval(line)
         print(code)
