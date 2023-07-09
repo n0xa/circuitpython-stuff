@@ -13,10 +13,9 @@ pool = socketpool.SocketPool(wifi.radio)
 ntp = adafruit_ntp.NTP(pool, tz_offset=0)
 print ("Setting system time")
 rtc.RTC().datetime = ntp.datetime
-iso_date_string = "2020-04-05T05:04:45.752301"
-isodate = datetime.fromisoformat(iso_date_string)
-print(isodate)
-
+logfile = str(datetime.isoformat(datetime.now())).replace(":","-")+"-wifi.csv"
+print("LogFile:\n "+logfile)
+writeheader = True
 # setup
 # Button A (M5 button on the front panel)
 # Press and hold to pause scanning
@@ -109,14 +108,18 @@ while True:
         else:
             auth = network.authmode
         rssi  = network.rssi
-        iso_date_string = "2020-04-05T05:04:45.752301"
-        isodate = datetime.fromisoformat(iso_date_string)
+        isodate = datetime.now()
         if logging:
-            with open("/log.csv", "a") as log:
-                    logentry = f"{bssid},{ssid},{auth},{isodate},{rssi},{lat},{lon},{alt},0,WIFI\n"
-                    print(ssid)
-                    log.write(logentry)
-                    log.flush
+            with open(logfile, "a") as log:
+                if writeheader:
+                    # This is pretty much the kismetdb-to-wiglecsv header and format.
+                    log.write("WigleWifi-1.4,appRelease=M5StickCPlus,model=ESP32,release=2023.07.08.8,device=M5StickCPlus,display=M5StickCPlus,board=M5StickCPlus,brand=M5StickCPlus")
+                    log.write("MAC,SSID,AuthMode,FirstSeen,Channel,RSSI,CurrentLatitude,CurrentLongitude,AltitudeMeters,AccuracyMeters,Type")
+                    writeheader = False
+                logentry = f"{bssid},{ssid},{auth},{isodate},{chan},{rssi},{lat},{lon},{alt},0,WIFI\n"
+                print(ssid)
+                log.write(logentry)
+                log.flush
         else:
             print(ssid)
     wifi.radio.stop_scanning_networks()
