@@ -1,5 +1,6 @@
-# Press the button to enable (green LED) or disable (red LED) fast mouse-clicking mode.
-# Surely you wouldn't use this to keep your Microsoft Teams status as Active while you step away from your workstation for a while...
+# Press the button to enable (green LED) or disable (red LED) fast mouse-jiggler mode.
+# Surely you wouldn't use this to keep your Microsoft Teams status as Active while 
+# you step away from your workstation for a while...
 import board
 import digitalio
 import time
@@ -37,13 +38,19 @@ while True:
     time.sleep(1.0)  # 1 second debounce
         
     while True:
-        # Random delay between 30-120 seconds
-        delay = random.uniform(30, 120)
-        time.sleep(delay)
-        
         # move mouse right 5 pixels, left 5 pixels
         mouse.move(x=5)
+        time.sleep(0.1)
         mouse.move(x=-5)
+
+        # Random delay between 30-120 seconds
+        delay = random.uniform(30, 120)
+        for i in range(delay * 10000):
+            time.sleep(0.1)
+            # Check if button is pressed to exit auto-click mode
+            if not button.value:  # Button pressed (active LOW)
+                pixel[0] = OFF
+                break       
         
         # Check if button is pressed to exit auto-click mode
         if not button.value:  # Button pressed (active LOW)
