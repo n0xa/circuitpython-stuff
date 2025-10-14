@@ -45,7 +45,7 @@ while True:
 
         # Random delay between 30-120 seconds
         delay = random.uniform(30, 120)
-        for i in range(delay * 10000):
+        for i in range(delay * 10):
             time.sleep(0.1)
             # Check if button is pressed to exit auto-click mode
             if not button.value:  # Button pressed (active LOW)
